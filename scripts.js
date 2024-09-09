@@ -8,11 +8,19 @@ const b7 = document.getElementById("b7");
 const b8 = document.getElementById("b8");
 const b9 = document.getElementById("b9");
 
+let count = 0;
+
 [b1, b2, b3, b4, b5, b6, b7, b8, b9].forEach((button) => {
     button.addEventListener('click', () => {
         if (button.value == "") {
-            button.value = "X";
+            if (count % 2 == 0) {
+                button.value = "X"
+                count++;
+            }
+            else {
+                button.value = "Y";
+                count++;
+            }
         }
-        if (button.value)
     });
 });

@@ -17,3 +17,9 @@
     outline: none;
     caret-color: transparent;
 }
+
+.board>input {
+    text-align: center;
+    font-weight: bold;
+    margin: 0;
+}
