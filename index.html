@@ -9,23 +9,35 @@
 </head>
 
 <body>
-    <div class="board">
-
-        <input type="text" name="" id="b1" autocomplete="off">
-        <input type="text" name="" id="b2" autocomplete="off">
-        <input type="text" name="" id="b3" autocomplete="off">
 
 
-        <input type="text" name="" id="b4" autocomplete="off">
-        <input type="text" name="" id="b5" autocomplete="off">
-        <input type="text" name="" id="b6" autocomplete="off">
-
-
-        <input type="text" name="" id="b7" autocomplete="off">
-        <input type="text" name="" id="b8" autocomplete="off">
-        <input type="text" name="" id="b9" autocomplete="off">
-
+    <div id="header">
+        <h1>Tic-Tac-Toe</h1>
     </div>
+    <div id="statusText"></div>
+    <div class="board">
+        <div cellIndex="0" class="cell"></div>
+        <div cellIndex="1" class="cell"></div>
+        <div cellIndex="2" class="cell"></div>
+        <div cellIndex="3" class="cell"></div>
+        <div cellIndex="4" class="cell"></div>
+        <div cellIndex="5" class="cell"></div>
+        <div cellIndex="6" class="cell"></div>
+        <div cellIndex="7" class="cell"></div>
+        <div cellIndex="8" class="cell"></div>
+    </div>
+
+    <div id="playerInputs">
+        <form onsubmit="return false">
+            <label for="playerOneName">Player 1:</label>
+            <input type="text" name="player1" id="playerOneName" required>
+            <label for="playerTwoName">Player 2:</label>
+            <input type="text" name="player2" id="playerTwoName" required>
+            <button id="start-button" name="player1">Start Game</button>
+        </form>
+    </div>
+
+    <button id="restart-button">Restart Game</button>
 </body>
 
 <script src="scripts.js"></script>

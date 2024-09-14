@@ -1,26 +1,128 @@
-const b1 = document.getElementById("b1");
-const b2 = document.getElementById("b2");
-const b3 = document.getElementById("b3");
-const b4 = document.getElementById("b4");
-const b5 = document.getElementById("b5");
-const b6 = document.getElementById("b6");
-const b7 = document.getElementById("b7");
-const b8 = document.getElementById("b8");
-const b9 = document.getElementById("b9");
+const cells = document.querySelectorAll(".cell");
+const statusText = document.getElementById("statusText");
+const restartButton = document.getElementById("restart-button");
+const nameButton = document.getElementById("start-button");
+const winConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+];
+let options = ["", "", "", "", "", "", "", "", ""];
+let options2 = ["", "", "", "", "", "", "", "", ""];
+let currentPlayer = "X";
+let currentPlayerName;
+let playerOneNameOutside;
+let playerTwoNameOutside;
+let running = false;
 
-let count = 0;
+// nameButton.addEventListener("click", () => {
+//     const playerOneName = document.getElementById("playerOneName").value.toString();
+//     const playerTwoName = document.getElementById("playerTwoName").value.toString();
+//     if (typeof playerOneName === 'string' && typeof playerTwoName === 'string') {
+//         initializeGame();
+//     }
+//     else {
+//         return;
+//     }
+// });
 
-[b1, b2, b3, b4, b5, b6, b7, b8, b9].forEach((button) => {
-    button.addEventListener('click', () => {
-        if (button.value == "") {
-            if (count % 2 == 0) {
-                button.value = "X"
-                count++;
-            }
-            else {
-                button.value = "Y";
-                count++;
+nameButton.addEventListener("click", () => {
+    const playerOneName = document.getElementById("playerOneName").value.trim();
+    const playerTwoName = document.getElementById("playerTwoName").value.trim();
+
+    playerOneNameOutside = playerOneName;
+    playerTwoNameOutside = playerTwoName;
+
+    if (running === false) {
+        for (let i = 0; i < options.length; i++) {
+            if (options[i] !== options2[i]) {
+                restartGame();
+                return;
             }
         }
-    });
+    }
+    if (playerOneName && playerTwoName) {
+        currentPlayerName = playerOneNameOutside; // Set the first player as the current player
+        initializeGame(playerOneName, playerTwoName);
+    } else {
+        return;
+    }
 });
+
+function initializeGame() {
+    cells.forEach((cell) => cell.addEventListener("click", cellClicked));
+    restartButton.addEventListener("click", restartGame);
+    statusText.textContent = `${currentPlayerName}'s turn`;
+    running = true;
+}
+
+function cellClicked() {
+    const cellIndex = this.getAttribute("cellIndex");
+
+    if (options[cellIndex] != "" || !running) { //does nothing if there is already a tic tac toe there
+        return
+    }
+
+    updateCell(this, cellIndex);
+    checkWinner();
+}
+
+function updateCell(cell, index) {
+    options[index] = currentPlayer;
+    cell.textContent = currentPlayer;
+
+    changePlayer();
+}
+
+function checkWinner() {
+    let roundWon = false;
+
+    for (let i = 0; i < winConditions.length; i++) {
+        const condition = winConditions[i];
+        const cellA = options[condition[0]];
+        const cellB = options[condition[1]];
+        const cellC = options[condition[2]];
+
+        if (cellA == "" || cellB == "" || cellC == "") {
+            continue;
+        }
+        if (cellA == cellB && cellB == cellC) {
+            roundWon = true;
+            break;
+        }
+    }
+
+    if (roundWon) {
+        changePlayer();
+        statusText.textContent = `${currentPlayerName} wins!`
+        running = false;
+    }
+    else if (!options.includes("")) {
+        statusText.textContent = `Draw!`;
+        running = false;
+    }
+    // else {
+    //     changePlayer();
+    // }
+}
+
+function restartGame() {
+    currentPlayer = "X";
+    options = ["", "", "", "", "", "", "", "", ""];
+    statusText.textContent = `${currentPlayerName}'s turn`;
+    cells.forEach(cell => cell.textContent = "");
+    running = true;
+}
+
+function changePlayer() {
+    currentPlayer = (currentPlayer == "X") ? "O" : "X";
+    currentPlayerName = (currentPlayerName == playerOneNameOutside) ? playerTwoNameOutside
+        : playerOneNameOutside;
+    statusText.textContent = `${currentPlayerName}'s turn`;
+}
+
